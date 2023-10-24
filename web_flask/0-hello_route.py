@@ -1,17 +1,17 @@
 #!/usr/bin/python3
-from flask import Flask
 """
 intialise flask web app to listen on 0.0.0.0:5000
 """
-application = Flask(__name__)
-
-@application.route('/', strict_slashes=False)
-def hello_world():
-    """
-    display "Hello HBNB!"
-    """
-    return ('Hello HBNB!')
+from flask import Flask
 
 
-if __name__ == "__main__":
-    application.run()
+app = Flask(__name__)
+
+
+@app.route('/', strict_slashes=False)
+def hello():
+    return "Hello HBNB!"
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
