@@ -1,29 +1,37 @@
 #!/usr/bin/python3
-from flask import Flask, render_template
 """
 intialize flask web app to listen on 0.0.0.0:5000
 """
+from flask import Flask
+from flask import render_template
+from models.state import State
+from models.amenity import Amenity
+from models import storage
+from operator import attrgetter
 
-from flask import Flask, render_template
-from models import storage, classes
+
 app = Flask(__name__)
-app.url_map.strict_slashes = False
 
-@app.route('/hbnb_filters')
+
+@app.route('/hbnb_filters', strict_slashes=False)
 def filters():
-    """
-    display HBNB HTML page
-    """
-    states = storage.all(classes["State"]).values()
-    amenities = storage.all(classes["Amenity"]).values()
-    return (render_template('10-hbnb_filters.html', states=states,
-                            amenities=amenities))
+    """filter out states, amenities from database. Render in html"""
+    states = []
+    all_states = storage.all(State)
+    amenities = []
+    all_amenities = storage.all(Amenity)
 
-@app.teardown_appcontext
-def teardown_db(exception):
-    """
-    """
-    storage.close()
+    for state in all_states.values():
+        states.append(state)
+    states = sorted(states, key=attrgetter("name"))
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    for amenity in all_amenities.values():
+        amenities.append(amenity)
+    amenities = sorted(amenities, key=attrgetter("name"))
+
+    return render_template('10-hbnb_filters.html', states=states,
+            amenities=amenities)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port='5000')
