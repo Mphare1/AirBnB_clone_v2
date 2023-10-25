@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-from flask import Flask, render_template
 """
 intializing flask web app to listen on 0.0.0.0:5000
 """
