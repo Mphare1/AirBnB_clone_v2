@@ -10,7 +10,6 @@ from operator import attrgetter
 
 app = Flask(__name__)
 
-
 @app.route('/states_list', strict_slashes=False)
 def states_list():
     """retrieve states from database and render templates based on results"""
