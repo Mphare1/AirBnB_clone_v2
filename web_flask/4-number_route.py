@@ -1,47 +1,40 @@
 #!/usr/bin/python3
-from flask import Flask
 
 """
 intialize flask web app to listen on 0.0.0.0:5000
 """
+from flask import Flask
+
+
 app = Flask(__name__)
-app.url_map.strict_slashes = False
 
-@app.route('/')
-def hello_world():
-    """
-    Display "Hello HBNB!"
-    """
-    return ('Hello HBNB!')
 
-@app.route('/hbnb')
-def hbnb():
-    """
-    route /hbnb displays
-    """
-    return ('HBNB')
+@app.route('/', strict_slashes=False)
+def hello():
+    return "Hello HBNB!"
 
-@app.route('/c/<text>')
-def c(text):
-    """
-    replaces _ with spaces
-    """
-    return ("C {}".format(text.replace('_', ' ')))
+@app.route('/hbnb', strict_slashes=False)
+def hbnb_hello():
+    return "HBNB"
 
-@app.route('/python')
-@app.route('/python/<text>')
-def py(text="is cool"):
-    """
-    default adds is cool and replaces _ with space
-    """
-    return("Python {}".format(text.replace('_', ' ')))
+@app.route('/c/<text>', strict_slashes=False)
+def c_is_fun(text):
+    """Return C is <text>"""
+    return "C is {}".format(text.replace('_', ' '))
 
-@app.route('/number/<int:n>')
-def num(n):
-    """
-    displays only if the added is an int
-    """
-    return ("{:d} is a number".format(n))
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+@app.route('/python', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def python_is_cool(text='is fun'):
+    """displays Python is '<text>', defaults to 'Python is cool"""
+    return "Python is {}".format(text.replace('_', ' '))
+
+
+@app.route('/number/<int:num>', strict_slashes=False)
+def check_num(num):
+    """check if 'num' is a number"""
+    return "{:d} is a number".format(num)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
